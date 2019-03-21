@@ -3,7 +3,7 @@
 $array = array(
     array(
         "key" => "package",
-        "\$_attributes" => array(
+        "_attributes_" => array(
             "login" => "login",
             "password" => "123456",
         ),
@@ -13,14 +13,14 @@ $array = array(
                 "value" => array(
                     array(
                         "key" => "default",
-                        "\$_attributes" => array(
+                        "_attributes_" => array(
                             "sender" => "SMSINFO"
                         ),
                     ),
                     array(
                         "key" => "msg",
                         "value" => "text",
-                        "\$_attributes" => array(
+                        "_attributes_" => array(
                             "id" => "1234",
                             "recipient" => "+79021234567",
                             "sender" => "SMSINFO",
@@ -32,7 +32,7 @@ $array = array(
                     array(
                         "key" => "msg",
                         "value" => "text",
-                        "\$_attributes" => array(
+                        "_attributes_" => array(
                             "recipient" => "+79021234567",
                         )
                     ),
@@ -54,21 +54,19 @@ $array = array(
         )
     )
 );
-/**
- * Конвертер массив к xml
-*/
+
 function _buildXML($data, $parentKey = "root", &$xml = "")
 {
     foreach ($data as $datum) {
         if (isset($datum["key"])) {
             $key = $datum["key"];
             //Проверяем что рассматриваемый элемент это не набор атрибутов
-            if ($key !== '_attributes_') {
+            if ($key !== "_attributes_") {
                 $value = isset($datum["value"]) ? $datum["value"] : "";//значение тега - либо вложенные теги(массив), либо просто значение - str,int n etc.
 
                 $attributes = array();
-                if (isset($datum["\_attributes_"])) {
-                    foreach ($datum["\_attributes_"] as $attributeKey => $attributeValue) {
+                if (isset($datum["_attributes_"])) {
+                    foreach ($datum["_attributes_"] as $attributeKey => $attributeValue) {
                         $attributes[] =
                             "{$attributeKey}=\"" . str_replace('"', '\"', (string) $attributeValue) . "\"";
                     }
