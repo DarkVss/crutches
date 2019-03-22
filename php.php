@@ -92,12 +92,12 @@ echo "<pre>" . json_encode(
  *
  * @param array   $data
  * @param integer $emptyKeysAmount
- * @param string  $xml
  *
  * @return string
  */
-function _buildXML($data, $emptyKeysAmount = 0, &$xml = "")
+function _buildXML($data, $emptyKeysAmount = 0)
 {
+    $xml = "";
     foreach ($data as $datum) {
         if (isset($datum["key"])) {
             $key = (isset($datum["key"]) && !empty($datum["key"])) ? $datum["key"] : "unknown_key_" . ($emptyKeysAmount++);
@@ -117,19 +117,17 @@ function _buildXML($data, $emptyKeysAmount = 0, &$xml = "")
 
                 $xml .= "<$key $attributes" . (empty($value) ? "/" : "") . ">";
 
-                if (is_array($value)) {
-                    //Если значение это массив значит внутри набор элементов
-                    _buildXML($value, $emptyKeysAmount, $xml);
-                } else {
-                    $xml .= (string) $value;
-                }
+                $xml .= (is_array($value)) ?
+                    _buildXML($value, $emptyKeysAmount) :
+                    (string) $value;
+            }
 
-                if (!empty($value)) {
-                    $xml .= "</$key>";
-                }
+            if (!empty($value)) {
+                $xml .= "</$key>";
             }
         }
     }
+        
     return $xml;
 }
 
