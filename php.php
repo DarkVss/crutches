@@ -92,10 +92,11 @@ echo "<pre>" . json_encode(
  *
  * @param array   $data
  * @param integer $emptyKeysAmount
+ * @param string  $xml
  *
  * @return string
  */
-function _buildXML($data, $emptyKeysAmount = 0)
+function _buildXML($data, $emptyKeysAmount = 0, &$xml = "")
 {
     $xml = "";
     foreach ($data as $datum) {
@@ -118,7 +119,7 @@ function _buildXML($data, $emptyKeysAmount = 0)
                 $xml .= "<$key $attributes" . (empty($value) ? "/" : "") . ">";
 
                 $xml .= (is_array($value)) ?
-                    _buildXML($value, $emptyKeysAmount) :
+                    _buildXML($value, $emptyKeysAmount, $xml) :
                     (string) $value;
             }
 
