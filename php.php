@@ -90,17 +90,17 @@ echo "<pre>" . json_encode(
  * Build xml string from array
  * Example array and output string in begin function
  *
- * @param array  $data
- * @param string $parentKey
- * @param string $xml
+ * @param array   $data
+ * @param integer $emptyKeysAmount
+ * @param string  $xml
  *
  * @return string
  */
-function _buildXML($data, $parentKey = "root", &$xml = "")
+function _buildXML($data, $emptyKeysAmount = 0, &$xml = "")
 {
     foreach ($data as $datum) {
         if (isset($datum["key"])) {
-            $key = $datum["key"];
+            $key = (isset($datum["key"]) && !empty($datum["key"])) ? $datum["key"] : "unknown_key_" . ($emptyKeysAmount++);
             //Проверяем что рассматриваемый элемент это не набор атрибутов
             if ($key !== "_attributes_") {
                 $value = isset($datum["value"]) ? $datum["value"] : "";//значение тега - либо вложенные теги(массив), либо просто значение - str,int n etc.
@@ -119,7 +119,7 @@ function _buildXML($data, $parentKey = "root", &$xml = "")
 
                 if (is_array($value)) {
                     //Если значение это массив значит внутри набор элементов
-                    _buildXML($value, $key, $xml);
+                    _buildXML($value, $emptyKeysAmount, $xml);
                 } else {
                     $xml .= (string) $value;
                 }
