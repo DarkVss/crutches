@@ -1,0 +1,152 @@
+/*
+<div id="loader">
+    <div class="roller">
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+    </div>
+</div>
+ */
+
+@keyframes myanimation {
+    0% {
+        background-color: red;
+    }
+    25% {
+        background-color: yellow;
+    }
+    50% {
+        background-color: green;
+    }
+    75% {
+        background-color: brown;
+    }
+    100% {
+        background-color: red;
+    }
+}
+
+body {
+    margin: 0;
+}
+
+#loader {
+    position: fixed;
+    z-index: 1000;
+    background: white;
+    width: 100%;
+    height: 100%;
+}
+
+.roller {
+    display: inline-block;
+    position: absolute;
+    width: 64px;
+    height: 64px;
+    top: 50%;
+    margin-top: -32px;
+    left: 50%;
+    margin-left: -32px;
+}
+
+.roller div {
+    animation: roller 1s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+    transform-origin: 32px 32px;
+}
+
+.roller div:after {
+    content: " ";
+    display: block;
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    animation: myanimation 6s infinite;
+    margin: -3px 0 0 -3px;
+}
+
+.roller div:nth-child(1) {
+    animation-delay: -0.036s;
+}
+
+.roller div:nth-child(1):after {
+    top: 50px;
+    left: 50px;
+}
+
+.roller div:nth-child(2) {
+    animation-delay: -0.072s;
+}
+
+.roller div:nth-child(2):after {
+    top: 54px;
+    left: 45px;
+}
+
+.roller div:nth-child(3) {
+    animation-delay: -0.108s;
+}
+
+.roller div:nth-child(3):after {
+    top: 57px;
+    left: 39px;
+}
+
+.roller div:nth-child(4) {
+    animation-delay: -0.144s;
+}
+
+.roller div:nth-child(4):after {
+    top: 58px;
+    left: 32px;
+}
+
+.roller div:nth-child(5) {
+    animation-delay: -0.18s;
+}
+
+.roller div:nth-child(5):after {
+    top: 57px;
+    left: 25px;
+}
+
+.roller div:nth-child(6) {
+    animation-delay: -0.216s;
+}
+
+.roller div:nth-child(6):after {
+    top: 54px;
+    left: 19px;
+}
+
+.roller div:nth-child(7) {
+    animation-delay: -0.252s;
+}
+
+.roller div:nth-child(7):after {
+    top: 50px;
+    left: 14px;
+}
+
+.roller div:nth-child(8) {
+    animation-delay: -0.288s;
+}
+
+.roller div:nth-child(8):after {
+    top: 45px;
+    left: 10px;
+}
+
+@keyframes roller {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
