@@ -242,3 +242,24 @@ function _parseXML($xmlObject)
 
     return $xmlArray;
 }
+
+/**
+ * Masking for string
+ *
+ * @param string $string  input string
+ * @param string $pattern pattern for masked - consist by `%`
+ *
+ * <b>Example:</b><br>
+ * $string = '79998887766';<br>
+ * $pattern = '+%(%%%)%%%-%%-%%';<br>
+ * return "+7(999)888-77-66"
+ *
+ * @return string
+ */
+function applyMask($string, $pattern)
+{
+    $string = (string) $string;
+    $pattern = (string) $pattern;
+
+    return vsprintf(str_replace('%', '%s', $pattern), str_split($string));
+}
