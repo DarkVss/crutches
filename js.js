@@ -13,7 +13,7 @@ function isEmpty() {
                 arguments[i] === 0 ||
                 arguments[i] === "0" ||
                 arguments[i].length === 0 ||
-                (Object.keys(arguments[i]).length === 0 && ["Number", "Date"].indexOf(arguments[i].__proto__.constructor.name) === -1)
+                (Object.keys(arguments[i]).length === 0 && ["Number", "Date", "Boolean"].indexOf(arguments[i].__proto__.constructor.name) === -1)
             );
         return empty;
     }
