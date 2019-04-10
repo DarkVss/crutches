@@ -1,5 +1,6 @@
 /**
  * Check empty arg(s)
+ *
  * @returns {boolean}
  */
 function isEmpty() {
@@ -21,9 +22,11 @@ function isEmpty() {
 
 /**
  * Step by step filling in the array values ​​from the minimum to the maximum value
+ *
  * @param first integer|float minimal value
  * @param last integer|float maximal value
  * @param step integer|float step increase value
+ *
  * @returns {Array}
  */
 Array.range = function (first, last, step) {
@@ -47,10 +50,12 @@ Array.range = function (first, last, step) {
 };
 
 /**
+ * Url constructor
  *
  * @param emptyGetParams - value can be empty or not
  * @param obj - key=value
  * @param cursor - for difficult params multiFold
+ *
  * @returns {Array} - Object for join("&")
  */
 function urlConstructor(emptyGetParams, obj, cursor) {
@@ -79,7 +84,7 @@ function urlConstructor(emptyGetParams, obj, cursor) {
 
 /**
  * Export html table from page to xls file
- * tableToExcel('tableID', 'SheetName', 'FileName.xls');
+ * use like `tableToExcel('tableID', 'SheetName', 'FileName.xls');`
  */
 var tableToExcel = (function () {
 
@@ -111,8 +116,10 @@ var tableToExcel = (function () {
 //TODO: need associate with __proto__
 /**
  * String formatting
+ *
  * @param mask string - for example `+X(XXX) XXX-XX-XX`
  * @param data string|number
+ *
  * @returns {string}
  */
 function format(mask, data) {
@@ -141,4 +148,48 @@ Array.prototype.swapElements = function (indexFirst, indexSecond) {
 //TODO: upgrade it to more general
 function pad(n) {
     return n < 10 ? "0" + n : n;
+}
+
+/**
+ * Get GET-params from current page url or string
+ * 
+ * @param url string
+ * 
+ * @returns {Object}
+ */
+function getGetParams(url) {
+    var queryString = url ? url.split('?')[1] : window.location.search.slice(1);
+    var obj = {};
+
+    if (queryString) {
+        queryString = queryString.split('#')[0];
+        var arr = queryString.split('&');
+        for (var i = 0; i < arr.length; i++) {
+            var a = arr[i].split('=');
+            var paramName = a[0];
+            var paramValue = typeof (a[1]) === 'undefined' ? true : a[1];
+            if (typeof paramValue === 'string') paramValue = paramValue.toLowerCase();
+            if (paramName.match(/\[(\d+)?\]$/)) {
+                var key = paramName.replace(/\[(\d+)?\]/, '');
+                if (!obj[key]) obj[key] = [];
+                if (paramName.match(/\[\d+\]$/)) {
+                    var index = /\[(\d+)\]/.exec(paramName)[1];
+                    obj[key][index] = paramValue;
+                } else {
+                    obj[key].push(paramValue);
+                }
+            } else {
+                if (!obj[paramName]) {
+                    obj[paramName] = paramValue;
+                } else if (obj[paramName] && typeof obj[paramName] === 'string') {
+                    obj[paramName] = [obj[paramName]];
+                    obj[paramName].push(paramValue);
+                } else {
+                    obj[paramName].push(paramValue);
+                }
+            }
+        }
+    }
+
+    return obj;
 }
