@@ -16,8 +16,8 @@ function isEmpty() {
                 arguments[i].length === 0 ||
                 (Object.keys(arguments[i]).length === 0 && ["Number", "Date", "Boolean"].indexOf(arguments[i].__proto__.constructor.name) === -1)
             );
-        return empty;
     }
+    return empty;
 }
 
 /**
