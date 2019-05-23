@@ -43,6 +43,15 @@ body {
     height: 100%;
 }
 
+.roller:after {
+    content: "Text under roller";
+    position: absolute;
+    bottom: -2em;
+    width: max-content;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
 .roller {
     display: inline-block;
     position: absolute;
