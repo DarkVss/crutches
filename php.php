@@ -263,3 +263,46 @@ function applyMask($string, $pattern)
 
     return vsprintf(str_replace('%', '%s', $pattern), str_split($string));
 }
+
+/**
+ * Convert dec number to custom base, but not higher than 62
+ *
+ * @param integer|string $inputNumber
+ * @param integer        $baseNumber
+ *
+ * @return string
+ */
+function customBaseFromDec($inputNumber, $baseNumber = 62)
+{
+    $base = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    $r = $inputNumber % $baseNumber;
+    $res = $base[$r];
+    $q = floor($inputNumber / $baseNumber);
+    while ($q) {
+        $r = $q % $baseNumber;
+        $q = floor($q / $baseNumber);
+        $res = $base[$r] . $res;
+    }
+
+    return $res;
+}
+
+/**
+ * Convert custom base number to dec, but not higher than 62
+ *
+ * @param integer|string $inputNumber
+ * @param integer        $baseNumber
+ *
+ * @return string
+ */
+function customBaseToDec($inputNumber, $baseNumber = 62)
+{
+    $base = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    $limit = strlen($inputNumber);
+    $res = strpos($base, $inputNumber[0]);
+    for ($i = 1; $i < $limit; $i++) {
+        $res = $baseNumber * $res + strpos($base, $inputNumber[$i]);
+    }
+
+    return $res;
+}
