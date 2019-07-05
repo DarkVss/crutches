@@ -286,7 +286,7 @@ function customBaseFromDec($inputNumber, $maxFilling = true, $baseNumber = 62)
     }
 
     if ($maxFilling === true) {
-        $res = str_pad($res, 5, "0");
+        $res = str_pad($res, 5, "0", STR_PAD_LEFT);
     }
 
     return $res;
