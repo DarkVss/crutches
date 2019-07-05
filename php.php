@@ -267,12 +267,13 @@ function applyMask($string, $pattern)
 /**
  * Convert dec number to custom base, but not higher than 62
  *
- * @param integer|string $inputNumber
- * @param integer        $baseNumber
+ * @param integer|string $inputNumber number
+ * @param boolean        $maxFilling  filling in missing characters with zeros
+ * @param integer        $baseNumber  base number
  *
  * @return string
  */
-function customBaseFromDec($inputNumber, $baseNumber = 62)
+function customBaseFromDec($inputNumber, $maxFilling = true, $baseNumber = 62)
 {
     $base = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
     $r = $inputNumber % $baseNumber;
@@ -282,6 +283,10 @@ function customBaseFromDec($inputNumber, $baseNumber = 62)
         $r = $q % $baseNumber;
         $q = floor($q / $baseNumber);
         $res = $base[$r] . $res;
+    }
+
+    if ($maxFilling === true) {
+        $res = str_pad($res, 5, "0");
     }
 
     return $res;
