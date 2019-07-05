@@ -295,7 +295,7 @@ function customBaseFromDec($inputNumber, $maxFilling = true, $baseNumber = 62)
 /**
  * Convert custom base number to dec, but not higher than 62
  *
- * @param integer|string $inputNumber
+ * @param integer|string $inputNumber max 10 symbols
  * @param integer        $baseNumber
  *
  * @return string
