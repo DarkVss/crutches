@@ -269,11 +269,12 @@ function applyMask($string, $pattern)
  *
  * @param integer|string $inputNumber number
  * @param boolean        $maxFilling  filling in missing characters with zeros
- * @param integer        $baseNumber  base number
+ * @param integer        $fillingLength
+ * @param integer        $baseNumber  output base number to convert
  *
  * @return string
  */
-function customBaseFromDec($inputNumber, $maxFilling = true, $baseNumber = 62)
+public static function customBaseFromDec($inputNumber, $maxFilling = true, $fillingLength = 5, $baseNumber = 62)
 {
     $base = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
     $r = $inputNumber % $baseNumber;
@@ -286,7 +287,7 @@ function customBaseFromDec($inputNumber, $maxFilling = true, $baseNumber = 62)
     }
 
     if ($maxFilling === true) {
-        $res = str_pad($res, 5, "0", STR_PAD_LEFT);
+        $res = str_pad($res, $fillingLength, "0", STR_PAD_LEFT);
     }
 
     return $res;
