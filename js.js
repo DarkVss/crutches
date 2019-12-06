@@ -193,3 +193,26 @@ function getGetParams(url) {
 
     return obj;
 }
+
+/**
+ * @param {string} dataString YYYY-MM-DD HH:II:SS
+ *
+ * @return {Date|null}
+ */
+function parseDate(dataString) {
+    let date = null;
+
+    if (!isEmpty(dataString)) {
+        const pattern = /\d+/g;
+        let data = dataString.match(pattern);
+        if (data !== null && data.length >= 3) {
+            for (var index = 0; index < 6; index++) {
+                data[index] = isEmpty(data[index]) ? "00" : data[index];
+            }
+
+            date = new Date(data[0], data[1] - 1, data[2], data[3], data[4], data[5]);
+        }
+    }
+
+    return date;
+}
