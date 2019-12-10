@@ -4,8 +4,8 @@
  * @returns {boolean}
  */
 function isEmpty() {
-    var empty = true;
-    for (var i = 0; i < arguments.length; i++) {
+    let empty = true;
+    for (let i = 0; i < arguments.length; i++) {
         empty = empty && (
                 arguments[i] === false ||
                 arguments[i] === "false" ||
@@ -59,13 +59,13 @@ Array.range = function (first, last, step) {
  * @returns {Array} - Object for join("&")
  */
 function urlConstructor(emptyGetParams, obj, cursor) {
-    var w = [];
-    for (var key in obj) {
-        var value = obj[key];
+    let w = [];
+    for (let key in obj) {
+        let value = obj[key];
         if (value instanceof Function) {
             continue;
         }
-        var newCursor = cursor;
+        let newCursor = cursor;
         if (key.toUpperCase !== undefined) {
             newCursor += (newCursor.length === 0) ? key : (parseInt(key) + "" === key ? "[]" : "[" + key + "]");
         } else {
@@ -86,20 +86,19 @@ function urlConstructor(emptyGetParams, obj, cursor) {
  * Export html table from page to xls file
  * use like `tableToExcel('tableID', 'SheetName', 'FileName.xls');`
  */
-var tableToExcel = (function () {
-
-    var uri = 'data:application/vnd.ms-excel;base64,';
-    var template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--><meta http-equiv="content-type" content="text/plain; charset=UTF-8"/></head><body><table>{table}</table></body></html>';
-    var base64 = function (s) {
+let tableToExcel = (function () {
+    const uri = "data:application/vnd.ms-excel;base64,";
+    let template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--><meta http-equiv="content-type" content="text/plain; charset=UTF-8"/></head><body><table>{table}</table></body></html>';
+    let base64 = function (s) {
         return window.btoa(unescape(encodeURIComponent(s)))
     };
-    var format = function (s, c) {
+    let format = function (s, c) {
         return s.replace(/{(\w+)}/g, function (m, p) {
             return c[p];
         })
     };
-    var downloadURI = function (uri, name) {
-        var link = document.createElement("a");
+    let downloadURI = function (uri, name) {
+        let link = document.createElement("a");
         link.download = name;
         link.href = uri;
         link.click();
@@ -107,8 +106,8 @@ var tableToExcel = (function () {
 
     return function (table, name, fileName) {
         if (!table.nodeType) table = document.getElementById(table);
-        var ctx = {worksheet: name || 'Worksheet', table: table.innerHTML};
-        var resuri = uri + base64(format(template, ctx));
+        let ctx = {worksheet: name || "Worksheet", table: table.innerHTML};
+        let resuri = uri + base64(format(template, ctx));
         downloadURI(resuri, fileName);
     }
 })();
@@ -140,9 +139,10 @@ String.prototype.replaceAll = function (find, replace_to) {
 };
 
 Array.prototype.swapElements = function (indexFirst, indexSecond) {
-    var b = this[indexFirst];
+    let b = this[indexFirst];
     this[indexFirst] = this[indexSecond];
     this[indexSecond] = b;
+    return this;
 };
 
 //TODO: upgrade it to more general
@@ -158,22 +158,22 @@ function pad(n) {
  * @returns {Object}
  */
 function getGetParams(url) {
-    var queryString = url ? url.split('?')[1] : window.location.search.slice(1);
-    var obj = {};
+    let queryString = url ? url.split('?')[1] : window.location.search.slice(1);
+    let obj = {};
 
     if (queryString) {
         queryString = queryString.split('#')[0];
-        var arr = queryString.split('&');
-        for (var i = 0; i < arr.length; i++) {
-            var a = arr[i].split('=');
-            var paramName = a[0];
-            var paramValue = typeof (a[1]) === 'undefined' ? true : a[1];
+        let arr = queryString.split('&');
+        for (let i = 0; i < arr.length; i++) {
+            let a = arr[i].split('=');
+            let paramName = a[0];
+            let paramValue = typeof (a[1]) === 'undefined' ? true : a[1];
             if (typeof paramValue === 'string') paramValue = paramValue.toLowerCase();
             if (paramName.match(/\[(\d+)?\]$/)) {
-                var key = paramName.replace(/\[(\d+)?\]/, '');
+                let key = paramName.replace(/\[(\d+)?\]/, '');
                 if (!obj[key]) obj[key] = [];
                 if (paramName.match(/\[\d+\]$/)) {
-                    var index = /\[(\d+)\]/.exec(paramName)[1];
+                    let index = /\[(\d+)\]/.exec(paramName)[1];
                     obj[key][index] = paramValue;
                 } else {
                     obj[key].push(paramValue);
@@ -194,6 +194,11 @@ function getGetParams(url) {
     return obj;
 }
 
+/**
+ * @param {string} dataString YYYY-MM-DD HH:II:SS
+ *
+ * @return {Date|null}
+ */
 /**
  * @param {string} dataString YYYY-MM-DD HH:II:SS
  *
