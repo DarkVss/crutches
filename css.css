@@ -197,6 +197,7 @@ div.tabs_wrapper>(div.tabs_item>(input[name=tabs-group-1,type=radio]#tabs-1+labe
     padding: 5px 10px;
     border: 1px solid #666;
     border-bottom: none;
+    margin: 0;
 }
 
 .tabs_item-content {
