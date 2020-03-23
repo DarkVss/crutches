@@ -1,3 +1,4 @@
+/********   Page  Loader    *******/
 /*
 <div id="loader">
     <div class="roller">
@@ -159,9 +160,11 @@ body {
         transform: rotate(360deg);
     }
 }
+/********   Custom  Page  Scroll-Bar    *******/
 
 .custom-scroll::-webkit-scrollbar {
     width: 4px;
+    height: 4px;
 }
 
 .custom-scroll::-webkit-scrollbar-track {
@@ -171,4 +174,48 @@ body {
 
 .custom-scroll::-webkit-scrollbar-thumb {
     background-color: #c3c3c3;
+}
+
+/********   Tabs  On  Pure  CSS    *******/
+/*
+div.tabs_wrapper>(div.tabs_item>(input[name=tabs-group-1,type=radio]#tabs-1+label.tabs_item-title[for=tabs-1]+section.tabs_item-content))
+ */
+.tabs_wrapper {
+    position: relative;
+}
+
+.tabs_item, .tabs_item-title {
+    display: inline-block;
+}
+
+.tabs_item input[type="radio"] {
+    display: none;
+}
+
+.tabs_item-title {
+    background: #d2d2d2;
+    padding: 5px 10px;
+    border: 1px solid #666;
+    border-bottom: none;
+}
+
+.tabs_item-content {
+    position: absolute;
+    border: 1px solid #666;
+    padding: 10px;
+    left: 0;
+    width: calc(100% - 20px);
+    display: none;
+}
+
+/********   Active  Tabs  State    *******/
+.tabs_item :checked + .tabs_item-title {
+    position: relative;
+    background: #fff;
+    top: 1px;
+    z-index: 1;
+}
+
+.tabs_item :checked ~ .tabs_item-content {
+    display: block;
 }
