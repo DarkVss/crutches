@@ -221,3 +221,137 @@ function parseDate(dataString) {
 
     return date;
 }
+
+/**
+ * Notice builder
+ * 
+ * In page must be element with ID equal `notice`
+ */
+let NoticeBuilder = function () {
+    let DisableTimeout;
+    let IsInfo = false;
+    let IsSuccess = false;
+    let IsWarning = false;
+    let IsError = true;
+    let Message = 'Неизвестная ошибка';
+
+
+    return {
+        /**
+         * Set timeout before notice will be removed
+         *
+         * @param disableTimeout    milliseconds
+         *
+         * @return {NoticeBuilder}
+         */
+        setDisableTimeout : function (disableTimeout) {
+            this.DisableTimeout = disableTimeout;
+
+            return this;
+        },
+        /**
+         * Set what is notice Info
+         *
+         * @return {NoticeBuilder}
+         */
+        isInfo            : function () {
+            this.IsInfo = true;
+            this.IsSuccess = false;
+            this.IsWarning = false;
+            this.IsError = false;
+
+            return this;
+        },
+        /**
+         * Set what is notice Success
+         *
+         * @return {NoticeBuilder}
+         */
+        isSuccess         : function () {
+            this.IsInfo = false;
+            this.IsSuccess = true;
+            this.IsWarning = false;
+            this.IsError = false;
+
+            return this;
+        },
+        /**
+         * Set what is notice Warning
+         *
+         * @return {NoticeBuilder}
+         */
+        isWarning         : function () {
+            this.IsInfo = false;
+            this.IsSuccess = false;
+            this.IsWarning = true;
+            this.IsError = false;
+
+            return this;
+        },
+        /**
+         * Set what is notice Error
+         *
+         * @return {NoticeBuilder}
+         */
+        isError           : function () {
+            this.IsInfo = false;
+            this.IsSuccess = false;
+            this.IsWarning = false;
+            this.IsError = true;
+
+            return this;
+        },
+        /**
+         * Set message of notice
+         *
+         * @return {NoticeBuilder}
+         */
+        setMessage        : function (message) {
+            if (!isEmpty(message)) {
+                this.Message = message;
+            }
+
+            return this;
+        },
+        show              : function () {
+            let noticeContainer = document.getElementById("notice");
+
+            if (noticeContainer !== null) {
+                if (isEmpty(this.DisableTimeout)) {
+                    this.DisableTimeout = 3 * 1000;
+                }
+                if (isEmpty(this.Message)) {
+                    this.Message = 'Неизвестная ошибка';
+                }
+
+                let noticeClass = this.IsInfo ? "info" : (
+                    this.IsSuccess ? "success" : (
+                        this.IsWarning ? "warning" : "error"
+                    )
+                );
+
+                let uniqueClass = `cl${parseInt(new Date().getTime() / 1000, 10)}`;
+
+                let noticeWrapper = document.createElement("div");
+                let noticeIcon = document.createElement("div");
+                let noticeMessage = document.createElement("div");
+
+                noticeWrapper.setAttribute("class", `notice ${noticeClass} ${uniqueClass}`);
+                noticeIcon.setAttribute("class", `icon icon-${noticeClass}`);
+                noticeMessage.setAttribute("class", `notice__text`);
+                noticeMessage.innerHTML = this.Message;
+
+                noticeWrapper.appendChild(noticeIcon);
+                noticeWrapper.appendChild(noticeMessage);
+
+                noticeContainer.appendChild(noticeWrapper);
+
+                setTimeout(function () {
+                    noticeWrapper.remove();
+                }, this.DisableTimeout);
+            }
+        },
+    };
+};
+
+NoticeBuilder().isSuccess().setMessage("hello").setDisableTimeout(4000).show()
