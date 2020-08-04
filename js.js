@@ -355,3 +355,4 @@ let NoticeBuilder = function () {
 };
 
 NoticeBuilder().isSuccess().setMessage("hello").setDisableTimeout(4000).show()
+NoticeBuilder().isSuccess().setMessage("hello").show() // default timeout = 3 * 1000 ms
