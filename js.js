@@ -224,7 +224,7 @@ function parseDate(dataString) {
 
 /**
  * Notice builder
- * 
+ *
  * In page must be element with ID equal `notice`
  */
 let NoticeBuilder = function () {
@@ -233,7 +233,8 @@ let NoticeBuilder = function () {
     let IsSuccess = false;
     let IsWarning = false;
     let IsError = true;
-    let Message = 'Неизвестная ошибка';
+    let Message = "Неизвестная ошибка";
+    let ActionAfter = null;
 
 
     return {
@@ -259,6 +260,7 @@ let NoticeBuilder = function () {
             this.IsSuccess = false;
             this.IsWarning = false;
             this.IsError = false;
+            this.ActionAfter = null;
 
             return this;
         },
@@ -272,6 +274,7 @@ let NoticeBuilder = function () {
             this.IsSuccess = true;
             this.IsWarning = false;
             this.IsError = false;
+            this.ActionAfter = null;
 
             return this;
         },
@@ -285,6 +288,7 @@ let NoticeBuilder = function () {
             this.IsSuccess = false;
             this.IsWarning = true;
             this.IsError = false;
+            this.ActionAfter = null;
 
             return this;
         },
@@ -298,6 +302,7 @@ let NoticeBuilder = function () {
             this.IsSuccess = false;
             this.IsWarning = false;
             this.IsError = true;
+            this.ActionAfter = null;
 
             return this;
         },
@@ -311,6 +316,20 @@ let NoticeBuilder = function () {
                 this.Message = message;
             }
 
+            return this;
+        },
+        /**
+         * Set action after message will deletion
+         *
+         * @return {NoticeBuilder}
+         */
+        setActionAfter    : function (actionAfter) {
+            if (typeof actionAfter === "function") {
+                this.ActionAfter = actionAfter;
+                console.log("set", this.ActionAfter);
+            } else {
+                console.log("no set");
+            }
             return this;
         },
         show              : function () {
@@ -346,13 +365,43 @@ let NoticeBuilder = function () {
 
                 noticeContainer.appendChild(noticeWrapper);
 
+                const ActionAfter = this.ActionAfter;
+
                 setTimeout(function () {
                     noticeWrapper.remove();
+                    if (typeof ActionAfter === "function") {
+                        ActionAfter();
+                    }
                 }, this.DisableTimeout);
             }
         },
     };
 };
-
+const action = () => { alert("world"); };
+NoticeBuilder().isSuccess().setMessage("hello").setDisableTimeout(4000).setActionAfter(action).show()
 NoticeBuilder().isSuccess().setMessage("hello").setDisableTimeout(4000).show()
 NoticeBuilder().isSuccess().setMessage("hello").show() // default timeout = 3 * 1000 ms
+
+class Loader {
+    /**
+     * @param id {string} ID loader block
+     */
+    constructor(id = "loader") {
+        this.loader = document.getElementById(id);
+        if (this.loader === null) {
+            this.loader = document.getElementById("loader");
+        }
+    }
+
+    show() {
+        if (this.loader !== null) {
+            this.loader.classList.remove("hidden");
+        }
+    }
+
+    hide() {
+        if (this.loader !== null) {
+            this.loader.classList.add("hidden");
+        }
+    }
+}
