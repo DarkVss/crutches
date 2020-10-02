@@ -29,7 +29,7 @@ function isEmpty() {
  *
  * @returns {Array}
  */
-Array.range = function (first, last, step) {
+Array.range = function (first, step, last) {
     var output = [];
     if (first !== undefined && last !== undefined) {
         if (first > last) {
