@@ -168,7 +168,6 @@ function getGetParams(url) {
             let a = arr[i].split('=');
             let paramName = a[0];
             let paramValue = typeof (a[1]) === 'undefined' ? true : a[1];
-            if (typeof paramValue === 'string') paramValue = paramValue.toLowerCase();
             if (paramName.match(/\[(\d+)?\]$/)) {
                 let key = paramName.replace(/\[(\d+)?\]/, '');
                 if (!obj[key]) obj[key] = [];
