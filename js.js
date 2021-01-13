@@ -404,3 +404,18 @@ class Loader {
         }
     }
 }
+
+/**
+* Call functions in turn
+* e.g. multi-call
+*/
+x = (params,...after)=>{alert("x");if(after.length!==0){after.shift()({},...after);}};
+y = (params,...after)=>{alert("y");if(after.length!==0){after.shift()({},...after);}};
+z = (params,...after)=>{alert("z");if(after.length!==0){after.shift()({},...after);}};
+c = (params,...after)=>{alert("c");if(after.length!==0){after.shift()({},...after);}};
+
+x(
+    z,
+    y,
+    c
+);
