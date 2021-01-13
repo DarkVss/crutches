@@ -409,12 +409,13 @@ class Loader {
 * Call functions in turn
 * e.g. multi-call
 */
-x = (params,...after)=>{alert("x");if(after.length!==0){after.shift()({},...after);}};
-y = (params,...after)=>{alert("y");if(after.length!==0){after.shift()({},...after);}};
-z = (params,...after)=>{alert("z");if(after.length!==0){after.shift()({},...after);}};
-c = (params,...after)=>{alert("c");if(after.length!==0){after.shift()({},...after);}};
+x = (params,...after)=>{if (!Array.isArray(params)) {params = [];}let param = params.shift() || [];alert("x");if(after.length!==0){after.shift()({},...after);}};
+y = (params,...after)=>{if (!Array.isArray(params)) {params = [];}let param = params.shift() || [];alert("y");if(after.length!==0){after.shift()({},...after);}};
+z = (params,...after)=>{if (!Array.isArray(params)) {params = [];}let param = params.shift() || [];alert("z");if(after.length!==0){after.shift()({},...after);}};
+c = (params,...after)=>{if (!Array.isArray(params)) {params = [];}let param = params.shift() || [];alert("c");if(after.length!==0){after.shift()({},...after);}};
 
 x(
+    [],
     z,
     y,
     c
