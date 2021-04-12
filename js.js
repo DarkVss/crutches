@@ -221,6 +221,17 @@ function parseDate(dataString) {
     return date;
 }
 
+function toCLipboard(text = '') {
+    if (!isEmpty(text)) {
+        let el = document.createElement("textarea");
+        el.value = text;
+        document.body.appendChild(el);
+        el.select();
+        document.execCommand("copy");
+        document.body.removeChild(el);
+    }
+}
+
 /**
  * Notice builder
  *
@@ -421,13 +432,33 @@ x(
     c
 );
 
-function toCLipboard(text = '') {
-    if (!isEmpty(text)) {
-        let el = document.createElement("textarea");
-        el.value = text;
-        document.body.appendChild(el);
-        el.select();
-        document.execCommand("copy");
-        document.body.removeChild(el);
+/**
+ * Class for run some function by interval(ms)
+ */
+class IntervalFunction {
+    /**
+     * @param {function} callback function for execution
+     * @param {int} interval milliseconds interval for execute
+     */
+    constructor(callback, interval) {
+        this.callback = callback;
+        this.interval = interval;
+    }
+
+    /**
+     * @param {bool} immediatelyRun immediately run function
+     */
+    run(immediatelyRun = false) {
+        if(immediatelyRun === true) {
+            this.callback();
+        }
+        this.intervalID = setInterval(this.callback, this.interval);
+    }
+
+    stop() {
+        if (isEmpty(this.intervalID) === false) {
+            clearInterval(this.intervalID);
+            this.intervalID = null;
+        }
     }
 }
