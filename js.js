@@ -1,4 +1,16 @@
 /**
+ * Safety get value from nested object
+ *
+ * @param {array} way - way to value
+ * @param {object} object
+ *
+ * @return null|mixed - NULL - not found, otherwise return desired value
+ */
+const safetyNestedObjectValue = (way, object) => {
+    return way.reduce((xs, x) => (xs && xs[x]) ? xs[x] : null, object);
+}
+
+/**
  * Check empty arg(s)
  *
  * @returns {boolean}
