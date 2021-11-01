@@ -233,6 +233,53 @@ function parseDate(dataString) {
     return date;
 }
 
+
+/**
+ * Get count element of object
+ *
+ * @param {Object} object
+ * @returns {*}
+ */
+function countObject(object) {
+    return isEmpty(object) ? 0 : Object.keys(object).length;
+}
+
+/**
+ * Get object key by value
+ *
+ * @param {int|string|boolean|object|array} val
+ * @return {string}
+ */
+Object.prototype.getKeyByValue = function (val) {
+    let key = undefined;
+    let index = Object.values(this).indexOf(val);
+    if (index !== -1) {
+        key = Object.keys(this)[index];
+    }
+
+    return key;
+};
+
+/**
+ *
+ * @param file
+ * @returns base64 encoded file
+ */
+
+function toBase64(file) {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = error => reject(error);
+    });
+}
+
+/**
+ * Copy text to clipboard
+ * @param {string} text
+ * @param {string|null} copiedMessage - message after successful coping, default - <b>Значение скопированно</b>
+ */
 function toCLipboard(text = '') {
     if (!isEmpty(text)) {
         let el = document.createElement("textarea");
