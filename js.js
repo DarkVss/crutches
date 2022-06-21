@@ -203,18 +203,18 @@ function parseQueryParams(queryString) {
             if (!queryParams[key]) queryParams[key] = [];
             if (paramName.match(/\[\d+\]$/)) {
                 let index = /\[(\d+)\]/.exec(paramName)[1];
-                queryParams[key][index] = paramValue;
+                queryParams[key][index] = decodeURIComponent(paramValue);
             } else {
-                queryParams[key].push(paramValue);
+                queryParams[key].push(decodeURIComponent(paramValue));
             }
         } else {
             if (!queryParams[paramName]) {
-                queryParams[paramName] = paramValue;
+                queryParams[paramName] = decodeURIComponent(paramValue);
             } else if (queryParams[paramName] && typeof queryParams[paramName] === "string") {
-                queryParams[paramName] = [queryParams[paramName]];
-                queryParams[paramName].push(paramValue);
+                queryParams[paramName] = [decodeURIComponent(queryParams[paramName])];
+                queryParams[paramName].push(decodeURIComponent(paramValue));
             } else {
-                queryParams[paramName].push(paramValue);
+                queryParams[paramName].push(decodeURIComponent(paramValue));
             }
         }
     }
