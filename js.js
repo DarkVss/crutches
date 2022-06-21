@@ -233,7 +233,7 @@ function buildQueryParams(params) {
     let queryArray = [];
 
     Object.keys(params).forEach((key) => {
-        queryArray.push(key + "=" + params[key]);
+        queryArray.push(encodeURIComponent(key) + "=" + encodeURIComponent(params[key]));
     });
 
     return queryArray.join("&");
