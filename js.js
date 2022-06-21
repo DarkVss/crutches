@@ -162,47 +162,81 @@ function pad(n) {
     return n < 10 ? "0" + n : n;
 }
 
+
 /**
- * Get GET-params from current page url or string
- * 
- * @param url string
- * 
+ * Get GET-params from current page url or string (one depth level)
+ *
+ * @param {string} url
+ *
  * @returns {Object}
  */
 function getGetParams(url) {
-    let queryString = url ? url.split('?')[1] : window.location.search.slice(1);
-    let obj = {};
+    let queryString = url ? url.split("?")[1] : window.location.search.slice(1);
+    let getParams = {};
 
     if (queryString) {
-        queryString = queryString.split('#')[0];
-        let arr = queryString.split('&');
-        for (let i = 0; i < arr.length; i++) {
-            let a = arr[i].split('=');
-            let paramName = a[0];
-            let paramValue = typeof (a[1]) === 'undefined' ? true : a[1];
-            if (paramName.match(/\[(\d+)?\]$/)) {
-                let key = paramName.replace(/\[(\d+)?\]/, '');
-                if (!obj[key]) obj[key] = [];
-                if (paramName.match(/\[\d+\]$/)) {
-                    let index = /\[(\d+)\]/.exec(paramName)[1];
-                    obj[key][index] = paramValue;
-                } else {
-                    obj[key].push(paramValue);
-                }
+        queryString = queryString.split("#")[0];
+
+        getParams = parseQueryParams(queryString);
+    }
+
+    return getParams;
+}
+
+/**
+ * Parse query params (one depth level)
+ *
+ * @param {string} queryString
+ *
+ * @returns {Object}
+ */
+function parseQueryParams(queryString) {
+    let queryParams = {};
+
+    let arr = queryString.split("&");
+    for (let i = 0; i < arr.length; i++) {
+        let a = arr[i].split("=");
+        let paramName = a[0];
+        let paramValue = typeof (a[1]) === "undefined" ? true : a[1];
+        if (paramName.match(/\[(\d+)?\]$/)) {
+            let key = paramName.replace(/\[(\d+)?\]/, "");
+            if (!queryParams[key]) queryParams[key] = [];
+            if (paramName.match(/\[\d+\]$/)) {
+                let index = /\[(\d+)\]/.exec(paramName)[1];
+                queryParams[key][index] = paramValue;
             } else {
-                if (!obj[paramName]) {
-                    obj[paramName] = paramValue;
-                } else if (obj[paramName] && typeof obj[paramName] === 'string') {
-                    obj[paramName] = [obj[paramName]];
-                    obj[paramName].push(paramValue);
-                } else {
-                    obj[paramName].push(paramValue);
-                }
+                queryParams[key].push(paramValue);
+            }
+        } else {
+            if (!queryParams[paramName]) {
+                queryParams[paramName] = paramValue;
+            } else if (queryParams[paramName] && typeof queryParams[paramName] === "string") {
+                queryParams[paramName] = [queryParams[paramName]];
+                queryParams[paramName].push(paramValue);
+            } else {
+                queryParams[paramName].push(paramValue);
             }
         }
     }
 
-    return obj;
+    return queryParams;
+}
+
+/**
+ * Build query params (one depth level)
+ *
+ * @param {object} params
+ *
+ * @returns {Object}
+ */
+function buildQueryParams(params) {
+    let queryArray = [];
+
+    Object.keys(params).forEach((key) => {
+        queryArray.push(key + "=" + params[key]);
+    });
+
+    return queryArray.join("&");
 }
 
 /**
