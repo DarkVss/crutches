@@ -326,10 +326,99 @@ function toCLipboard(text = '') {
 }
 
 /**
- * Notice builder
- *
- * In page must be element with ID equal `notice`
- */
+* Notice builder
+*
+* In page must be element with ID equal `notice`
+*
+* Markup:
+*  <div id="notice-container"></div>
+*
+* Classes:
+*  #notice-container {
+*     width: 350px;
+*     position: fixed;
+*     right: 10px;
+*     bottom: 10px;
+*     z-index: 99999999999;
+*  }
+*
+*  .notice-message {
+*     display: flex;
+*     align-items: center;
+*     margin-top: 5px;
+*     padding: 1em 1em;
+*     border-radius: 5px;
+*     font-weight: bolder;
+*     cursor: default;
+*     text-align: center;
+*     transition: opacity 1000ms linear;
+*     position: relative;
+*  }
+*
+*  .notice-close {
+*     position: absolute;
+*     top: 0;
+*     right: 0.25em;
+*     cursor: pointer;
+*  }
+*
+*  .notice-close:hover {
+*     text-shadow: 0 0 4px white;
+*  }
+*
+*  .notice-close:before {
+*     content: "✕";
+*     font-size: 1.4em;
+*  }
+*
+*  .notice-icon {
+*     margin-right: 15px;
+*     font-size: 30px;
+*     font-weight: normal;
+*     opacity: 0.8;
+*  }
+*
+*  .notice-icon::before {
+*     content: "";
+*     font-family: "Material Design Icons";
+*  }
+*
+*  .notice-icon_error::before {
+*     content: "\F0028";
+*  }
+*
+*  .notice-icon_warning::before {
+*     content: "\F0026";
+*  }
+*
+*  .notice-icon_success::before {
+*     content: "\F05E0";
+*  }
+*
+*  .notice-icon_info::before {
+*     content: "\F02FC";
+*  }
+*
+*  .notice-error {
+*     color: #fff;
+*     background-color: var(--color-red);
+*  }
+*
+*  .notice-warning {
+*     color: #fff;
+*     background-color: #ffb100;
+*  }
+*
+*  .notice-info {
+*     color: #fff;
+*     background-color: var(--color-blue);
+*  }
+*
+*  .notice-success {
+*     color: #fff;
+*     background-color: var(--color-green);
+*  }
+*/
 let NoticeBuilder = function () {
     let DisableTimeout;
     let IsInfo = false;
@@ -455,14 +544,18 @@ let NoticeBuilder = function () {
                 let uniqueClass = `cl${parseInt(new Date().getTime() / 1000, 10)}`;
 
                 let noticeWrapper = document.createElement("div");
+                let noticeCloser = document.createElement("div");
                 let noticeIcon = document.createElement("div");
                 let noticeMessage = document.createElement("div");
 
                 noticeWrapper.setAttribute("class", `notice ${noticeClass} ${uniqueClass}`);
+                noticeCloser.setAttribute("class", `notice-close`);
+                noticeCloser.setAttribute("onclick", `document.getElementsByClassName("${uniqueClass}")[0].remove()`);
                 noticeIcon.setAttribute("class", `icon icon-${noticeClass}`);
                 noticeMessage.setAttribute("class", `notice__text`);
                 noticeMessage.innerHTML = this.Message;
 
+                noticeWrapper.appendChild(noticeCloser);
                 noticeWrapper.appendChild(noticeIcon);
                 noticeWrapper.appendChild(noticeMessage);
 
