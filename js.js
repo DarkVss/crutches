@@ -648,3 +648,24 @@ class IntervalFunction {
         }
     }
 }
+
+/**
+ * Screenshot by `html2canvas` lib (https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js)
+ */
+function screenshot() {
+        let target = document.getElementById("<TARGET_ID>") || document.getElementsByClassName("<TARGET_CLASS>")[0];
+
+        if (target !== undefined) {
+            html2canvas(target, {
+                onrendered : function (canvas) {
+                    const now = new Date();
+
+                    const downloadLink = document.createElement("a");
+                    downloadLink.href = "data:image/png;base64,"+canvas.toDataURL().replace("data:image/png;base64,", '');
+                    downloadLink.download = `Screenshot(${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}_${pad(now.getHours())}-${pad(now.getMinutes())}-${pad(now.getSeconds())})`;
+
+                    downloadLink.click();
+                },
+            });
+        }
+    }
