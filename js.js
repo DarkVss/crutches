@@ -696,7 +696,7 @@ function validateContact(type, value) {
         }
             break;
         case "email": {
-            let matches = value.match(/([\_a-zA-Z0-9-\.]+)@([a-zA-Z0-9-\.\_]+)(\.[a-zA-Z]{2,4})/);
+            let matches = value.match(/([\_a-zA-Z0-9-\.]+)@([a-zA-Z0-9-\.\_]+)(\.[a-zA-Z]{2,20})/);
             if (matches === null || matches.length !== 4 || matches[0] !== matches.input) {
                 return false;
             }
