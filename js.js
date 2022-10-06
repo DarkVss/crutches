@@ -669,3 +669,45 @@ function screenshot() {
         });
     }
 }
+
+/**
+ * Validate contact
+ *
+ * @param {string} type **email/phone/`something`**
+ * @param {string} value validate stirng
+ *
+ * @returns {boolean|string} FALSE - invalid string, otherwise validated string
+ */
+function validateContact(type, value) {
+    switch ( type ) {
+        case "phone": {
+            value = value.replaceAll(/[^0-9]/, '');
+
+            if (value.length == 11) {
+                if (value[0] == "8") {
+                    value[0] = "7";
+                }
+            } else if (value.length == 10) {
+                value = "7" + value;
+            } else {
+                return false;
+            }
+        }
+            break;
+        case "email": {
+            let matches = value.match(/([\_a-zA-Z0-9-\.]+)@([a-zA-Z0-9-\.\_]+)(\.[a-zA-Z]{2,4})/);
+            if (matches === null || matches.length !== 4 || matches[0] !== matches.input) {
+                return false;
+            }
+        }
+            break;
+        default: {
+            if (value.length === 0) {
+                return false;
+            }
+        }
+            break;
+    }
+
+    return value;
+}
