@@ -679,6 +679,7 @@ function screenshot() {
  * @returns {boolean|string} FALSE - invalid string, otherwise validated string
  */
 function validateContact(type, value) {
+    value += '';
     switch ( type ) {
         case "phone": {
             value = value.replaceAll(/[^0-9]/, '');
