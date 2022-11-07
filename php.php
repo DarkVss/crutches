@@ -332,5 +332,5 @@ function snakeToCamelCase(string $string) : string {
  * @return string
  */
 function camelToSnakeCase(string $string): string {
-    return ltrim(preg_replace_callback("/[A-Z]/", fn(array $matches) => "_" . strtolower($matches[0]), $string), "_");
+    return trim(preg_replace_callback("/[A-Z]/", fn(array $matches) => "_" . strtolower($matches[0]), $string), "_");
 }
