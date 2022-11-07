@@ -312,3 +312,25 @@ function customBaseToDec($inputNumber, $baseNumber = 62)
 
     return $res;
 }
+
+/**
+ * Convert snake_case to camelCase
+ * 
+ * @param string $string
+ *
+ * @return string
+ */
+function snakeToCamelCase(string $string) : string {
+    return str_replace("_", '', lcfirst(ucwords(strtolower($string), "_")));
+}
+
+/**
+ * Convert camelCase to snake_case
+ * 
+ * @param string $string
+ *
+ * @return string
+ */
+function camelToSnakeCase(string $string): string {
+    return ltrim(preg_replace_callback("/[A-Z]/", fn(array $matches) => "_" . strtolower($matches[0]), $string), "_");
+}
