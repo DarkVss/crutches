@@ -712,3 +712,10 @@ function validateContact(type, value) {
 
     return value;
 }
+
+
+window.addEventListener("resize", () => {
+    clearTimeout(window.resizeTimeout);
+
+    window.resizeTimeout = setTimeout(resizeFunction, 200)
+});
