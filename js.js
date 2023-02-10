@@ -650,7 +650,7 @@ class IntervalFunction {
 }
 
 /**
- * Screenshot by `html2canvas` lib (https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js)
+ * Screenshot by `html2canvas` lib (https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js -> ./html2canvas.min.js)
  */
 function screenshot() {
     let target = document.getElementById("<TARGET_ID>") || document.getElementsByClassName("<TARGET_CLASS>")[0];
