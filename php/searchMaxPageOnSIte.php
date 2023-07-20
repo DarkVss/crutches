@@ -21,7 +21,9 @@ $url = "https://some.domain/news"; // "https://some.domain/news" > "https://some
 $getLastPageNumber = function(int $pageNumber,bool $previouslyIsRedirect,bool $isFinalSearch = false)use(&$getLastPageNumber, $url):int{
     $newPageNumber = $pageNumber + ($isFinalSearch === false ? 25 : ($previouslyIsRedirect === true ? -5 : 1));
     if($newPageNumber === 0){
-        return 1;
+        $pageNumber = 1;
+        $newPageNumber = 2;
+        $previouslyIsRedirect = false;
     }
 
     $code = getURLHttpCode("{$url}/page/{$newPageNumber}");
