@@ -10,4 +10,29 @@ final class Helpers {
     public static function convertSnakeCaseToCamelCase(string $text) : string {
         return ucwords(str_replace("_", '', ucwords($text, "_")));
     }
+
+    /**
+     * @param array  $data
+     * @param string $column
+     * @param int    $sort
+     * @param mixed  ...$rest pairs like two previously $args
+     *
+     * @return array
+     */
+    public static function arrayOrderBy(array $data, string $column, int $sort, ...$rest) : array {
+        $args = [$column, $sort, ...$rest];
+        foreach ($args as $n => $field) {
+            if (is_string($field) === true) {
+                $tmp = [];
+                foreach ($data as $key => $row) {
+                    $tmp[$key] = $row[$field];
+                }
+                $args[$n] = $tmp;
+            }
+        }
+        $args[] = &$data;
+        array_multisort(...$args);
+
+        return array_pop($args);
+    }
 }
