@@ -21,14 +21,12 @@ application.controller("SomeControllerName", function ($rootScope, $scope) {
                 $element.append($compile(template)($scope));
             }
         },
-        transclude : true,
         bindings   : {
             name    : "@",
             payload : "=",
         },
     })
     .component("firstComponent", {
-        transclude : true,
         template   : `<div>
             <div class="text-color_error"><b>firstComponent</b> component</div>
             <pre>{{$ctrl.payload|json}}</pre>
@@ -39,7 +37,6 @@ application.controller("SomeControllerName", function ($rootScope, $scope) {
         },
     })
     .component("secondComponent", {
-        transclude : true,
         template   : `<div>
             <div class="text-color_error"><b>secondComponent</b> component</div>
             <pre>{{$ctrl.payload|json}}</pre>
