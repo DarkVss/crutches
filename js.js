@@ -713,9 +713,69 @@ function validateContact(type, value) {
     return value;
 }
 
-
+/**
+* Set callback to resize window
+**/
 window.addEventListener("resize", () => {
     clearTimeout(window.resizeTimeout);
 
     window.resizeTimeout = setTimeout(resizeFunction, 200)
 });
+
+/**
+* Custom number convector
+**/
+class CustomNumber {
+    static #CUSTOM_BASE_DICTIONARY = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
+    /**
+     * Convert dec number to custom base, but not higher than 62
+     *
+     * @param {number|string} number number as decimal integer value
+     * @param {boolean}       maxFilling  filling in missing characters with zeros
+     * @param {int}           fillingLength
+     * @param {number}        baseNumber  output base number to convert
+     *
+     * @return {string}
+     */
+    static fromDec(number, maxFilling = false, fillingLength = 2, baseNumber = 62) {
+        number = parseInt(number, 10);
+        let r = number % baseNumber;
+        let result = this.#CUSTOM_BASE_DICTIONARY[r];
+        let q = Math.floor(number / baseNumber);
+        while (q) {
+            r = q % baseNumber;
+            q = Math.floor(q / baseNumber);
+            result = this.#CUSTOM_BASE_DICTIONARY[r] + result;
+        }
+
+        if (maxFilling === true) {
+            result = result.padStart(fillingLength, "0");
+        }
+
+        return result;
+    }
+
+    /**
+     * Convert custom base number to dec, but not higher than 65
+     *
+     * @param {number|string} number     <b>TIP:</b> symbols not included in base number will
+     *                                    removed
+     * @param {number}        baseNumber      input base number from convert
+     *
+     * @return {number} number as decimal integer value
+     */
+    static toDec(number, baseNumber = 62) {
+        number = (number + '').replace(`/[^${this.#CUSTOM_BASE_DICTIONARY}]/i`, '');
+        let limit = number.length;
+        if (limit === 0) {
+            return 0;
+        }
+        let result = this.#CUSTOM_BASE_DICTIONARY.indexOf(number[0]);
+        for (let index = 1; index < limit; index++) {
+            result = baseNumber * result + this.#CUSTOM_BASE_DICTIONARY.indexOf(number[index]);
+        }
+
+        return result;
+    }
+}
