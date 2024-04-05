@@ -723,6 +723,29 @@ window.addEventListener("resize", () => {
 });
 
 /**
+* Generate SVG separated colored circle
+**/
+const generateColoredCircle = (squareSide = 100, colors = ["#000000", "#FFFFFF"]) => {
+    const generateSector = (squareSide, sectorColor, startDeg, endDeg) => {
+        const degToRadian = Math.PI / 180;
+        const radius = squareSide / 2;
+        
+        return `<path d="M ${Math.sin(degToRadian * startDeg) * radius + radius} ${-Math.cos(degToRadian * startDeg) * radius + radius} `
+            + `A ${radius} ${radius} 0 0 1 ${Math.sin(degToRadian * endDeg) * radius + radius} ${-Math.cos(degToRadian * endDeg) * radius + radius} `
+            + `L ${radius} ${radius} Z" fill="${sectorColor}"/>`;
+    };
+
+    let svg = `<svg width="${squareSide}" height="${squareSide}" viewBox="0 0 ${squareSide} ${squareSide}" xmlns="http://www.w3.org/2000/svg">`;
+
+    let sectorSize = 360 / colors.length;
+    for (let colorIndex = 0; colorIndex < colors.length; colorIndex++) {
+        svg = `${svg}${generateSector(squareSide, colors[colorIndex], colorIndex * sectorSize, (colorIndex + 1) * sectorSize)}`;
+    }
+
+    return `${svg}</svg>`;
+};
+
+/**
 * Custom number convector
 **/
 class CustomNumber {
