@@ -334,3 +334,33 @@ function snakeToCamelCase(string $string) : string {
 function camelToSnakeCase(string $string): string {
     return trim(preg_replace_callback("/[A-Z]/", fn(array $matches) => "_" . strtolower($matches[0]), $string), "_");
 }
+
+/**
+ * Generate SVG separated colored circle
+ *
+ * @param int   $squareSide
+ * @param array $colors
+ *
+ * @return string
+ */
+function generateColoredCircle(int $squareSide = 100, array $colors = ["#000000", "#FFFFFF"]) : string {
+    $generateSector = function (int $squareSide, string $sectorColor, int|float $startDeg, int|float $endDeg) {
+        $degToRadian = M_PI / 180;
+        $radius = $squareSide / 2;
+
+        return "<path d=\"M " . (sin($degToRadian * $startDeg) * $radius + $radius) . " " . (-cos($degToRadian * $startDeg) * $radius + $radius)
+            . " A {$radius} {$radius} 0 0 1 " . (sin($degToRadian * $endDeg) * $radius + $radius) . " " . (-cos($degToRadian * $endDeg) * $radius + $radius)
+            . " L {$radius} {$radius} Z\" fill=\"{$sectorColor}\"/>";
+    };
+
+    $svg = "<svg width=\"{$squareSide}\" height=\"{$squareSide}\" viewBox=\"0 0 {$squareSide} {$squareSide}\" xmlns=\"http://www.w3.org/2000/svg\">";
+
+    $sectorSize = 360 / count($colors);
+    for ($colorIndex = 0; $colorIndex < count($colors); $colorIndex++) {
+        $svg = $svg . $generateSector($squareSide, $colors[$colorIndex], $colorIndex * $sectorSize, ($colorIndex + 1) * $sectorSize);
+    }
+
+    return "{$svg}</svg>";
+}
+
+echo generateColoredCircle(200, ["green", "red", "blue", "purple"]);
