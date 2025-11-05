@@ -150,4 +150,26 @@ final class Helpers {
 
         return implode('', $number);
     }
+
+    /**
+     * Forming pretty back trace
+     *
+     * @return array
+     */
+    public static function prettyBackTrace() : array {
+        $list = [];
+        foreach (debug_backtrace() as $index => $call) {
+            if (0 === $index) continue;
+            $str = "#{$index}: ";
+            if (true === isset($call['file'])) {
+                $str.= "{$call["file"]}:{$call["line"]} - ";
+            }
+            if (true === isset($call['class'])) {
+                $str.= "{$call["class"]}{$call["type"]}";
+            }
+            $list[] = "{$str}{$call["function"]}()";
+        }
+
+        return $list;
+    }
 }
