@@ -172,4 +172,104 @@ final class Helpers {
 
         return $list;
     }
+
+    public function buildThrowableReport(\Throwable $e): string
+    {
+        $report = [];
+
+        // Заголовок
+        $report[] = str_repeat('=', 80);
+        $report[] = 'ОТЧЁТ ОБ ИСКЛЮЧЕНИИ';
+        $report[] = str_repeat('=', 80);
+        $report[] = '';
+
+        // Основная информация
+        $report[] = '[' . date('Y-m-d H:i:s') . ']';
+        $report[] = '';
+        $report[] = 'ТИП:        ' . get_class($e);
+        $report[] = 'СООБЩЕНИЕ:  ' . $e->getMessage();
+        $report[] = 'КОД:        ' . $e->getCode();
+        $report[] = 'ФАЙЛ:       ' . $e->getFile();
+        $report[] = 'СТРОКА:     ' . $e->getLine();
+        $report[] = '';
+
+        // Трейс (стек вызовов) - в удобочитаемом формате
+        $report[] = str_repeat('-', 80);
+        $report[] = 'СТЕК ВЫЗОВОВ (TRACE):';
+        $report[] = str_repeat('-', 80);
+        $report[] = '';
+
+        $trace = $e->getTrace();
+        if (empty($trace)) {
+            $report[] = '  (стек вызовов пуст)';
+        } else {
+            foreach ($trace as $index => $frame) {
+                $report[] = sprintf(
+                    '  #%d  %s%s%s(%s)',
+                    $index,
+                    $frame['file'] ?? '[internal]',
+                    isset($frame['line']) ? ':' . $frame['line'] : '',
+                    isset($frame['class']) ? ' ' . $frame['class'] . $frame['type'] : '',
+                    $frame['function'] ?? '[anonymous]'
+                );
+
+                // Показываем аргументы (первые 3 для краткости)
+                if (isset($frame['args']) && !empty($frame['args'])) {
+                    $args = array_slice($frame['args'], 0, 3);
+                    $argsStr = [];
+
+                    foreach ($args as $arg) {
+                        if (is_scalar($arg)) {
+                            $argsStr[] = var_export($arg, true);
+                        } elseif (is_array($arg)) {
+                            $argsStr[] = 'array(' . count($arg) . ')';
+                        } elseif (is_object($arg)) {
+                            $argsStr[] = get_class($arg) . ' {...}';
+                        } elseif (is_resource($arg)) {
+                            $argsStr[] = 'resource(' . get_resource_type($arg) . ')';
+                        } else {
+                            $argsStr[] = gettype($arg);
+                        }
+                    }
+                    if (count($frame['args']) > 3) {
+                        $argsStr[] = '... (' . (count($frame['args']) - 3) . ' more)';
+                    }
+                    $report[] = '      args: ' . implode(', ', $argsStr);
+                }
+                $report[] = '';
+            }
+        }
+
+        // Предыдущее исключение (если есть)
+        if (null !== $e->getPrevious()) {
+            $report[] = str_repeat('-', 80);
+            $report[] = 'ПРЕДЫДУЩЕЕ ИСКЛЮЧЕНИЕ:';
+            $report[] = str_repeat('-', 80);
+            $report[] = '';
+            $report[] = $this->buildThrowableReport($e->getPrevious());
+        }
+
+        // Дополнительные данные (если есть)
+        if (method_exists($e, 'getAdditionalData')) {
+            $report[] = str_repeat('-', 80);
+            $report[] = 'ДОПОЛНИТЕЛЬНЫЕ ДАННЫЕ:';
+            $report[] = str_repeat('-', 80);
+            $report[] = '';
+            $data = $e->getAdditionalData();
+            if (is_array($data)) {
+                foreach ($data as $key => $value) {
+                    $report[] = '  ' . $key . ': ' . var_export($value, true);
+                }
+            } else {
+                $report[] = var_export($data, true);
+            }
+            $report[] = '';
+        }
+
+        $report[] = str_repeat('=', 80);
+        $report[] = 'КОНЕЦ ОТЧЁТА';
+        $report[] = str_repeat('=', 80);
+
+        return implode("\n", $report);
+    }
 }
